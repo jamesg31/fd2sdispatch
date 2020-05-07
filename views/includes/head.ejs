@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <base href='/'>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title><%= pageTitle %></title>
@@ -22,9 +23,7 @@
                 <% } %>
                 </ul>
                 <span class="navbar-text actions">
-                    <% if (isAdmin) { %>
-                    <a class="login" href="#">Admin</a>
-                    <% } if (!isAuth) { %>
+                    <% if (!isAuth) { %>
                     <a class="btn btn-light action-button" role="button" href="https://discord.com/api/oauth2/authorize?client_id=707334427398635570&redirect_uri=http%3A%2F%2Flocalhost%2Flogin&response_type=code&scope=identify%20guilds">Sign In</a>
                     <% } else { %>
                     <a class="btn btn-light action-button" role="button" href="logout">Sign Out</a>
