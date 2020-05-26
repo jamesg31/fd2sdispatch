@@ -1,0 +1,35 @@
+<%- include('../includes/head.ejs') %>
+<h4 class="card-title"><%= flight_data.flight_name %> Roster</h4>
+<b>Flight Info:</b>
+<p>Name: <%= flight_data.flight_name %><br>
+    Route: <%= flight_data.flight_departure %>-<%= data.flight_arrival %><br>
+    Start (Zulu): <%= flight_start %>z<br>
+    End (Zulu): <%= flight_end %>z</p>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Callsign</th>
+                <th>Departure Time (Zulu)</th>
+                <th>Departure Airport</th>
+                <th>Departure Gate</th>
+                <th>Discord</th>
+            </tr>
+        </thead>
+        <% for(i=0; i<Object.keys(data).length; i++) { %>
+        <tbody>
+            <tr>
+                <td><%= flight_data.flight_callsign %><%= data[i].callsign %></td>
+                <td><%= time[i] %></td>
+                <td><%= data[i].airport %></td>
+                <td><%= data[i].gate %></td>
+                <td><%= discord[i] %></td>
+            </tr>
+        </tbody>
+        <% } %>
+    </table>
+    <% if (isAdmin) { %>
+        <a class="text-center" href="/new-flight">Create New</a>
+    <% } %>
+</div>
+<%- include('../includes/end.ejs') %>

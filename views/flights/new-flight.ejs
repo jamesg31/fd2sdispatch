@@ -1,13 +1,47 @@
-<%- include('./includes/head.ejs') %>
+<%- include('../includes/head.ejs') %>
 <h4 class="card-title">Create New Flight</h4>
 <div class="form-holder">
     <form class="new-flight" action="/new-flight" method="POST">
         <div class="form-group">
-            <label for="date">Flight Date</label> 
-            <input id="date" name="date" placeholder="YYYY-MM-DD" type="text" class="form-control" required="required">
+            <label for="start">Flight Start Date and Time (Zulu)</label> 
+            <input type="text" class="form-control datetimepicker-input" id="datetimepicker4" name="start" data-toggle="datetimepicker" data-target="#datetimepicker4" placeholder="YYYY-MM-DD HH:MM"/>
         </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker4').datetimepicker({format : 'YYYY-MM-DD HH:mm', icons: {
+                    time: 'fas fa-clock',
+                    date: 'fas fa-calendar',
+                    up: 'fas fa-arrow-up',
+                    down: 'fas fa-arrow-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right',
+                    today: 'fas fa-calendar-check-o',
+                    clear: 'fas fa-trash',
+                    close: 'fas fa-times'
+                }});
+            });
+        </script>
         <div class="form-group">
-            <label for="date">Flight Name</label> 
+            <label for="start">Flight End Date and Time (Zulu)</label> 
+            <input type="text" class="form-control datetimepicker-input" id="datetimepicker5" name="end" data-toggle="datetimepicker" data-target="#datetimepicker5" placeholder="YYYY-MM-DD HH:MM"/>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker5').datetimepicker({format : 'YYYY-MM-DD HH:mm', icons: {
+                    time: 'fas fa-clock',
+                    date: 'fas fa-calendar',
+                    up: 'fas fa-arrow-up',
+                    down: 'fas fa-arrow-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right',
+                    today: 'fas fa-calendar-check-o',
+                    clear: 'fas fa-trash',
+                    close: 'fas fa-times'
+                }});
+            });
+        </script>
+        <div class="form-group">
+            <label  for="date">Flight Name</label> 
             <input id="name" name="name" placeholder="January Group Flight" type="text" class="form-control" required="required">
         </div>
         <div class="form-group">
@@ -48,4 +82,4 @@
         </div>
     </form>
 </div>
-<%- include('./includes/end.ejs') %>
+<%- include('../includes/end.ejs') %>

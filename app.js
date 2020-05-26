@@ -39,7 +39,7 @@ app.use((req, res, next) => {
         error = null;
     }
     let notification = req.flash('notification');
-    if (notification.length > 0) {
+    if (notification.length >  0) {
         notification = notification[0];
     } else {
         notification = null;
@@ -58,7 +58,11 @@ app.use((req, res, next) => {
 });
 
 const mainRoutes = require('./routes/main');
+const flightsRoutes = require('./routes/flights');
+const bookingsRoutes = require('./routes/bookings');
 app.use(mainRoutes);
+app.use(flightsRoutes);
+app.use(bookingsRoutes);
 
 db.connect((err) => {
     if (err) throw err;

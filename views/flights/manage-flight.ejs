@@ -1,0 +1,130 @@
+<%- include('../includes/head.ejs') %>
+<h4 class="card-title">Manage Flight</h4>
+<h6 class="text-muted card-subtitle mb-2">Only edit fields you want to change.</h6>
+<div class="form-holder">
+    <div>
+        <form class="manage-options" method="POST">
+            <input type="hidden" name="id" id="id" value="<%= id %>">
+            <div class="form-group">
+                <% if (data.open) { %>
+                <button type="submit" class="btn btn-primary" formaction="/close-flight">Close Bookings</button>
+                <% } else { %>
+                <button type="submit" class="btn btn-primary" formaction="/open-flight">Re-Open Bookings</button>
+                <% } %>
+                <button type="button" class="btn btn-danger" onclick="flightDelete()">Delete Flight</button>
+            </div>
+        </form>
+        <form id="deleteForm" action="/delete-flight" method="POST">
+            <input type="hidden" name="id" id="id" value="<%= id %>">
+        </form>
+        <script>
+            function flightDelete() {
+                bootbox.confirm({
+                    title: "Confirm Flight Deletion?",
+                    message: "Are you sure you wish to delete this flight? <b>This cannot be undone.</b>",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancel',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Confirm',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            document.getElementById('deleteForm').submit();
+                        }
+                    }
+                });
+            }
+        </script>
+    </div>
+    <form class="new-flight" action="/manage-flight" method="POST">
+        <input type="hidden" name="id" id="id" value="<%= id %>">
+        <div class="form-group">
+            <label for="start">Flight Start Date and Time (Zulu)</label> 
+            <input type="text" class="form-control datetimepicker-input" id="datetimepicker7" name="start" data-toggle="datetimepicker" data-target="#datetimepicker7" placeholder="YYYY-MM-DD HH:MM"/>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker7').datetimepicker({format : 'YYYY-MM-DD HH:mm', defaultDate: '<%= flight_start %>', icons: {
+                    time: 'fas fa-clock',
+                    date: 'fas fa-calendar',
+                    up: 'fas fa-arrow-up',
+                    down: 'fas fa-arrow-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right',
+                    today: 'fas fa-calendar-check-o',
+                    clear: 'fas fa-trash',
+                    close: 'fas fa-times'
+                }});
+            });
+        </script>
+        <div class="form-group">
+            <label for="start">Flight End Date and Time (Zulu)</label> 
+            <input type="text" class="form-control datetimepicker-input" id="datetimepicker8" name="end" data-toggle="datetimepicker" data-target="#datetimepicker8" placeholder="YYYY-MM-DD HH:MM"/>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker8').datetimepicker({format : 'YYYY-MM-DD HH:mm', defaultDate: '<%= flight_end %>', icons: {
+                    time: 'fas fa-clock',
+                    date: 'fas fa-calendar',
+                    up: 'fas fa-arrow-up',
+                    down: 'fas fa-arrow-down',
+                    previous: 'fas fa-chevron-left',
+                    next: 'fas fa-chevron-right',
+                    today: 'fas fa-calendar-check-o',
+                    clear: 'fas fa-trash',
+                    close: 'fas fa-times'
+                }});
+            });
+        </script>        <div class="form-group">
+            <label for="date">Flight Name</label> 
+            <input id="name" name="name" placeholder="Group Flight" type="text" class="form-control" required="required" value="<%= data.flight_name %>">
+        </div>
+        <div class="form-group">
+            <label for="departure">Airport 1 ICAO</label> 
+            <input id="departure" name="departure" placeholder="EGLL" type="text" class="form-control" required="required" value="<%= data.flight_departure %>">
+        </div>
+        <div class="form-group">
+            <label for="arrival">Airport 2 ICAO</label> 
+            <input id="arrival" name="arrival" placeholder="EHAM" type="text" class="form-control" required="required" value="<%= data.flight_arrival %>">
+        </div>
+        <div class="form-group">
+            <label for="gates1">Airport 1 Departure Gates</label> 
+            <input id="gates1" name="gates1" placeholder="A1, A2, A3, A4, B1, B2" type="text" aria-describedby="gates1HelpBlock" class="form-control" required="required" value="<%= gates1 %>"> 
+            <span id="gates1HelpBlock" class="form-text text-muted">Seperate with a comma and a space.</span>
+        </div>
+        <div class="form-group">
+            <label for="both">Enable Departures from Both Airports</label> 
+            <div>
+                <select id="both" name="both" aria-describedby="bothHelpBlock" class="custom-select" required="required">
+                    <% if (both == 2) { %>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                    <% } else { %>
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                    <% } %>
+                </select> 
+                <span id="bothHelpBlock" class="form-text text-muted">If no is selected, Airport 1 will be the departure airport.</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="gates2">Airport 2 Departure Gates</label> 
+            <input id="gates2" name="gates2" placeholder="A1, A2, A3, A4, B1, B2" type="text" class="form-control" aria-describedby="gates2HelpBlock" value="<%= gates2 %>"> 
+            <span id="gates2HelpBlock" class="form-text text-muted">Only use if departures are enabled from both airports.</span>
+        </div>
+        <div class="form-group">
+            <label for="callsign">Aircraft Callsign</label> 
+            <input id="callsign" name="callsign" placeholder="VCP" type="text" class="form-control" required="required" aria-describedby="callsignHelpBlock" value="<%= data.flight_callsign %>"> 
+            <span id="callsignHelpBlock" class="form-text text-muted">This callsign will be enforced for all members of this flight.</span>
+        </div>                 
+        <div class="form-group">
+            <button name="submit" type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</div>
+<%- include('../includes/end.ejs') %>

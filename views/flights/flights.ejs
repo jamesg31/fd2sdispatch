@@ -1,0 +1,71 @@
+<%- include('../includes/head.ejs') %>
+<h4 class="text-center card-title">Upcoming Group Flights</h4>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="padding: 12px;">Start (Zulu)</th>
+                <th style="padding: 12px;">End (Zulu)</th>
+                <th style="padding: 12px;">Name</th>
+                <th>Route</th>
+                <th>Roster</th>
+                <th>Open For Booking</th>
+                <% if (isAdmin) { %>
+                <th>Manage</th>
+                <% } %>
+            </tr>
+        </thead>
+        <% for(i=0; i<Object.keys(data).length; i++) { %>
+        <tbody>
+            <tr>
+                <td><%= flight_start[i] %></td>
+                <td><%= flight_end[i] %></td>
+                <td><%= data[i].flight_name %></td>
+                <td><%= data[i].flight_departure %>-<%= data[i].flight_arrival %></td>
+                <td><a href="/flights/<%= data[i].url %>">Click Here</a></td>
+                <% if (data[i].open & !bookings[i]) { %>
+                <td><a href="/new-booking/<%= data[i].url %>">Book Now</a></td>
+                <% } else if (bookings[i]) { %>
+                <td><a onclick="bookingDelete('<%= data[i].flight_id %>');event.preventDefault();" href="#">Delete Booking</a></td>
+                <form id="deleteForm<%= data[i].flight_id %>" action="/delete-booking" method="POST">
+                    <input type="hidden" name="id" id="id" value="<%= data[i].flight_id %>">
+                </form>
+                <% } else { %>
+                    <td>Closed</td>
+                <% } %>    
+                <% if (isAdmin) { %>
+                <td><a href="/manage-flight/<%= data[i].url %>">Manage Flight</a></td>
+                <% } %>
+                <script>
+                    function bookingDelete(id) {
+                        bootbox.confirm({
+                            title: "Confirm Booking Deletion?",
+                            message: "Are you sure you wish to delete this booking? <b>This cannot be undone.</b>",
+                            buttons: {
+                                cancel: {
+                                    label: '<i class="fa fa-times"></i> Cancel',
+                                    className: 'btn-primary'
+                                },
+                                confirm: {
+                                    label: '<i class="fa fa-check"></i> Confirm',
+                                    className: 'btn-danger'
+                                }
+                            },
+                            callback: function (result) {
+                                if (result) {
+                                    document.getElementById('deleteForm' + id).submit();
+                                }
+                            }
+                        });
+                    }
+                </script>        
+            </tr>
+        </tbody>
+        <% } %>
+        
+    </table>
+    <% if (isAdmin) { %>
+        <a class="text-center" href="/new-flight">Create New</a>
+    <% } %>
+</div>
+<%- include('../includes/end.ejs') %>
