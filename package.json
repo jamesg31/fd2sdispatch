@@ -19,7 +19,7 @@
     "moment": "^2.26.0",
     "mysql": "^2.18.1",
     "mysql-validator": "^0.1.6",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
